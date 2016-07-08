@@ -1,3 +1,3 @@
 ### Personal
 
-Personal configuration .bash_profile
+Personal configuration `.bash_profile`
