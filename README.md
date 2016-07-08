@@ -1,2 +1,3 @@
-# Personal
-Personal repository for config!.
+### Personal
+
+Personal configuration .bash_profile
