@@ -1,4 +1,4 @@
-###
+### 
 ### Vim terminal commands
 ### 
 
@@ -17,14 +17,18 @@ TERM=xterm-256color
 # Directories
 alias ls='ls -lha'
 alias ..='cd ..'
+alias du='du -h'
+alias df='df -h'
 
 # Git
 alias gst='git status'
 alias gl='git log'
 alias gpom='git pull origin master'
 alias gd='git diff'
+alias gds='git diff --staged'
 alias gbl='git branch -l'
 alias gck='git checkout'
+alias gi='git add -i'
 
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
@@ -71,8 +75,9 @@ shopt -s checkwinsize
 
 # LS COLORS
 export CLICOLOR=1
-
-
-
-
 export LSCOLORS=ExFxCxDxBxegedabagacad
+
+# GIT COMPLETION
+if [ -f ~/.vim/.git-completion.bash ]; then
+	  . ~/.vim/.git-completion.bash
+fi
