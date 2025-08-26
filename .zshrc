@@ -8,11 +8,14 @@
 TERM=xterm-256color
 
 
-
 ### 
 ### Helpful terminal aliases and stuff
 ### Feel free to change/remove them at your will.
 ###
+
+### 
+### Vim terminal commands
+### 
 
 # Directories
 alias ls='ls -lha'
@@ -30,10 +33,6 @@ alias gbl='git branch -l'
 alias gck='git checkout'
 alias gi='git add -i'
 
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-
 # 30m - Black
 # 31m - Red
 # 32m - Green
@@ -45,20 +44,16 @@ parse_git_branch() {
 # Everything else is green...
 # 0 - Normal
 # 1 - Bold
-# 2 - 
-function prompt {
-       local BLACK="\[\033[0;30m\]"
-       local RED="\[\033[0;31m\]"
-       local GREEN="\[\033[0;32m\]"
-       local YELLOW="\[\033[0;33m\]"
-       local BLUE="\[\033[0;34m\]"
-       local PURPLE="\[\033[0;35m\]"
-       local CYAN="\[\033[0;36m\]"
-       local WHITE="\[\033[0;37m\]"
-       local WHITEBOLD="\[\033[1;37m\]"
-export PS1="${WHITE}\u${RED}@${PURPLE}\h ${CYAN}\w ${WHITE}\$(parse_git_branch) ${YELLOW}$ \[\e[m\]\[\e[m\]"
+# 2 -
+
+# Função opcional para pegar branch do Git
+parse_git_branch() {
+  git rev-parse --abbrev-ref HEAD 2>/dev/null
 }
-prompt
+
+# Definindo o prompt colorido
+PROMPT='%F{white}%n%F{red}@%F{magenta}%m %F{cyan}%~ %F{white}$(parse_git_branch) %F{yellow}$ %f'
+ 
 
 # WELCOME MESSAGE
 echo -e ""
@@ -67,17 +62,18 @@ echo -e ""; cal;
 echo -ne "Up time: ";uptime | awk /'up/ {print $3,$4}'
 echo "";
 
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
 
-# Make bash check its window size after a process completes
-shopt -s checkwinsize
+# Se não for um shell interativo, sai daqui
+[[ $- != *i* ]] && return
 
-# LS COLORS
+# Faz o Zsh atualizar o tamanho da janela automaticamente
+setopt checkwinsize
+
+# LS COLORS (Zsh usa LS_COLORS, não LSCOLORS do Bash/macOS)
 export CLICOLOR=1
-export LSCOLORS=ExFxCxDxBxegedabagacad
+export LS_COLORS="di=34:ln=36:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=37;41:sg=30;43:tw=30;42:ow=34;42"
 
 # GIT COMPLETION
-if [ -f ~/.vim/.git-completion.bash ]; then
-	  . ~/.vim/.git-completion.bash
+if [ -f ~/.vim/.git-completion.zsh ]; then
+  source ~/.vim/.git-completion.zsh
 fi
